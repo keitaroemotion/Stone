@@ -1,5 +1,13 @@
 import java.util.*;
-
+/*
+ * Stone.java
+ *
+ * class to support immutable collection handling 
+ * 
+ * @author kei sugano
+ * 
+ *
+ */
 public class Stone {
 
     public static <T> List<T> newList(T e){
