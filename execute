@@ -1,2 +1,3 @@
 #!/usr/bin/env sh
-javac Main.java; java Main $1
+#javac Main.java lib/*.java; java Main $1
+javac ListSplitExample.java lib/*.java; java ListSplitExample $1

@@ -1,9 +1,12 @@
 package lib;
 
 import java.util.*;
+import java.util.stream.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.Path;
+import java.nio.charset.Charset;
 /*
  * Stone.java
  *
@@ -24,6 +27,16 @@ public class Stone {
         return push(newList(e), e2);
     }
 
+    public static <T> List<List<T>> SplitList(List<T> list, Integer i){
+       List<List<T>> l = new ArrayList<List<T>>();
+       return splitListSubRoutine(l, list,  0, list.size()/i, i);
+    }
+
+    public static <T> List<List<T>> splitListSubRoutine(List<List<T>> list, List<T> li,  Integer start, Integer end, Integer i){
+        return end - li.size() < li.size()/i ? 
+            splitListSubRoutine(push(list, li.subList(start, end < li.size() ? end : li.size())), li, end, (end+1)+li.size()/i , i )  : list ;
+    }
+ 
     public static <T> List<T> newList(T e, T e2, T e3){
         return push(newList(e, e2), e3);
     }
@@ -38,6 +51,22 @@ public class Stone {
 
     public static <T> List<T> newList(T e, T e2, T e3, T e4, T e5, T e6){
         return push(newList(e, e2, e3, e4, e5), e6);
+    }
+
+    public static <T> List<T> toList(Stream<T> s) {
+        return s.collect(Collectors.toList());
+    }
+
+    public static List<Integer> getOddList(List<Integer> list){
+        return toList(list.stream().filter(u -> u%2 == 1));
+    }
+
+    public static List<Integer> getEvenList(List<Integer> list){
+        return toList(list.stream().filter(u -> u%2 == 0));
+    }
+
+    public static List<Integer> rangeList(Integer start, Integer end, Integer i, List<Integer> list){
+        return end > i ? rangeList(start, end, i+1, push(list,start + i)) : list;
     }
 
     public static <T> List<T> concatList(List<T> list1, List<T> list2){
@@ -81,6 +110,18 @@ public class Stone {
             System.out.print(t.toString() + ",");
         System.out.print("]");
         System.out.println("");
+    }
+
+    public static Path getFile(String filename){
+        return Paths.get(filename);
+    }
+
+    public static void writeToFile(String filename, String text){
+        try {
+            Files.write(getFile(filename), newList(text), Charset.forName("UTF-8"));
+        }catch(IOException e){
+
+        }
     }
 
     public static <T> void putsLazy(List<T> list){
